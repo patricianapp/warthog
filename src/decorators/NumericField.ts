@@ -3,17 +3,14 @@ import { Column } from 'typeorm';
 import { ColumnNumericOptions } from 'typeorm/decorator/options/ColumnNumericOptions';
 import { ColumnCommonOptions } from 'typeorm/decorator/options/ColumnCommonOptions';
 
-import { decoratorDefaults } from '../metadata';
+import { decoratorDefaults, DecoratorDefaults } from '../metadata';
 import { composeMethodDecorators, MethodDecoratorFactory } from '../utils';
 import { NumericColumnType } from '../torm';
 
 import { WarthogField } from './WarthogField';
 
-interface NumericFieldOptions extends ColumnCommonOptions, ColumnNumericOptions {
+interface NumericFieldOptions extends ColumnCommonOptions, ColumnNumericOptions, DecoratorDefaults {
   dataType?: NumericColumnType;
-  filter?: boolean;
-  nullable?: boolean;
-  sort?: boolean;
 }
 
 export function NumericField(args: NumericFieldOptions = decoratorDefaults): any {
@@ -29,6 +26,7 @@ export function NumericField(args: NumericFieldOptions = decoratorDefaults): any
     }),
     Column({
       ...dbOptions,
+      ...nullableOption,
       type: args.dataType || 'numeric'
     }) as MethodDecoratorFactory
   ];

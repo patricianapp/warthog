@@ -1,38 +1,21 @@
 import { GraphQLBoolean } from 'graphql';
-import { Field } from 'type-graphql';
-import { Column } from 'typeorm';
 
-import { decoratorDefaults } from '../metadata';
-import { composeMethodDecorators, MethodDecoratorFactory } from '../utils';
+import { DecoratorDefaults } from '../metadata';
+import { composeMethodDecorators } from '../utils';
 
-import { WarthogField } from './WarthogField';
+import { getCombinedDecorator } from './getCombinedDecorator';
 
-interface BooleanFieldOptions {
+interface BooleanFieldOptions extends DecoratorDefaults {
   default?: boolean;
-  filter?: boolean;
-  nullable?: boolean;
-  sort?: boolean;
-  editable?: boolean;
 }
 
-export function BooleanField(args: BooleanFieldOptions = {}): any {
-  const options = { ...decoratorDefaults, ...args };
-  const nullableOption = options.nullable === true ? { nullable: true } : {};
-  const defaultOption =
-    options.default === true || options.default === false ? { default: options.default } : {};
-
-  const factories = [
-    WarthogField('boolean', options),
-    Field(() => GraphQLBoolean, {
-      ...nullableOption,
-      ...defaultOption
-    }),
-    Column({
-      type: 'boolean',
-      ...nullableOption,
-      ...defaultOption
-    }) as MethodDecoratorFactory
-  ];
+export function BooleanField(decoratorOptions: BooleanFieldOptions = {}): any {
+  const factories = getCombinedDecorator({
+    warthogFieldType: 'boolean',
+    decoratorOptions: decoratorOptions,
+    gqlFieldType: GraphQLBoolean,
+    dbType: 'boolean'
+  });
 
   return composeMethodDecorators(...factories);
 }

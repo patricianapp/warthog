@@ -1,18 +1,15 @@
 import { Field, Float } from 'type-graphql';
 import { Column } from 'typeorm';
 
-import { decoratorDefaults } from '../metadata';
+import { decoratorDefaults, DecoratorDefaults } from '../metadata';
 import { composeMethodDecorators, MethodDecoratorFactory } from '../utils';
 import { FloatColumnType, defaultColumnType } from '../torm';
 
 import { WarthogField } from './WarthogField';
 
-interface FloatFieldOptions {
+interface FloatFieldOptions extends DecoratorDefaults {
   dataType?: FloatColumnType; // int16, jsonb, etc...
   default?: number;
-  filter?: boolean;
-  nullable?: boolean;
-  sort?: boolean;
 }
 
 export function FloatField(args: FloatFieldOptions = decoratorDefaults): any {

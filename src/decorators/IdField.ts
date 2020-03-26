@@ -1,19 +1,16 @@
 import { Field } from 'type-graphql';
 import { Column } from 'typeorm';
 
-import { decoratorDefaults } from '../metadata';
+import { decoratorDefaults, DecoratorDefaults } from '../metadata';
 import { composeMethodDecorators, MethodDecoratorFactory } from '../utils';
 
 import { WarthogField } from './WarthogField';
 
-interface StringFieldOptions {
-  filter?: boolean;
-  nullable?: boolean;
-  sort?: boolean;
+interface IdFieldOptions extends DecoratorDefaults {
   unique?: boolean;
 }
 
-export function IdField(args: StringFieldOptions = decoratorDefaults): any {
+export function IdField(args: IdFieldOptions = decoratorDefaults): any {
   const options = { ...decoratorDefaults, ...args };
   const nullableOption = options.nullable === true ? { nullable: true } : {};
   const uniqueOption = options.unique ? { unique: true } : {};

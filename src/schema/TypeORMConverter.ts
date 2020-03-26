@@ -142,7 +142,7 @@ export function entityToCreateInput(model: ModelMetadata): string {
 
   const modelColumns = getColumnsForModel(model);
   modelColumns.forEach((column: ColumnMetadata) => {
-    if (!column.editable) {
+    if (!column.editable || column.readonly) {
       return;
     }
     const graphQLDataType = columnToGraphQLDataType(column);
@@ -183,7 +183,7 @@ export function entityToUpdateInput(model: ModelMetadata): string {
 
   const modelColumns = getColumnsForModel(model);
   modelColumns.forEach((column: ColumnMetadata) => {
-    if (!column.editable) {
+    if (!column.editable || column.readonly) {
       return;
     }
 
@@ -244,7 +244,7 @@ export function entityToWhereInput(model: ModelMetadata): string {
   const modelColumns = getColumnsForModel(model);
   modelColumns.forEach((column: ColumnMetadata) => {
     // Don't allow filtering on these fields
-    if (!column.filter) {
+    if (!column.filter || column.writeonly) {
       return;
     }
 
@@ -406,7 +406,7 @@ export function entityToOrderByEnum(model: ModelMetadata): string {
       return;
     }
 
-    if (column.sort) {
+    if (column.sort && !column.writeonly) {
       fieldsTemplate += `
         ${column.propertyName}_ASC = '${column.propertyName}_ASC',
         ${column.propertyName}_DESC = '${column.propertyName}_DESC',

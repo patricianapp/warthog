@@ -1,18 +1,15 @@
 import { Field, GraphQLISODateTime } from 'type-graphql';
 import { Column } from 'typeorm';
 
-import { decoratorDefaults } from '../metadata';
+import { decoratorDefaults, DecoratorDefaults } from '../metadata';
 import { ColumnType, defaultColumnType } from '../torm';
 import { composeMethodDecorators, MethodDecoratorFactory } from '../utils';
 
 import { WarthogField } from './WarthogField';
 
-interface DateFieldOptions {
+interface DateFieldOptions extends DecoratorDefaults {
   dataType?: ColumnType; // int16, jsonb, etc...
   default?: Date;
-  filter?: boolean;
-  nullable?: boolean;
-  sort?: boolean;
 }
 
 export function DateField(args: DateFieldOptions = {}): any {

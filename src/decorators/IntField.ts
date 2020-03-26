@@ -1,18 +1,15 @@
 import { Field, Int } from 'type-graphql';
 import { Column } from 'typeorm';
 
-import { decoratorDefaults } from '../metadata';
+import { decoratorDefaults, DecoratorDefaults } from '../metadata';
 import { composeMethodDecorators, MethodDecoratorFactory } from '../utils';
 import { IntColumnType } from '../torm';
 
 import { WarthogField } from './WarthogField';
 
-interface IntFieldOptions {
+interface IntFieldOptions extends DecoratorDefaults {
   dataType?: IntColumnType;
   default?: number;
-  filter?: boolean;
-  nullable?: boolean;
-  sort?: boolean;
 }
 
 export function IntField(args: IntFieldOptions = decoratorDefaults): any {
